@@ -15,5 +15,29 @@ namespace MVCDemo2.Controllers
             var ds = db.Products.ToList();
             return View(ds);
         }
+        public IActionResult Create()
+        {
+            return View();
+        }
+        public IActionResult Search(String txtName)
+        {
+            var r = db.Products.Where(p => p.ProductName.Contains(txtName)).ToList();
+            return View("Index", r);
+
+        }
+        public IActionResult DoCreate(Product product)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Products.Add(product);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View("Create");
+            }
+           
+        }
     }
 }
